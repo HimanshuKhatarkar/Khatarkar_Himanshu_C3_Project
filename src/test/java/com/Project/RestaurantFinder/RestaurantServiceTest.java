@@ -68,26 +68,36 @@ class RestaurantServiceTest {
     //ADMIN: ADDING & REMOVING RESTAURANTS
     //CALCULATE ORDER TOTAL
     @Test
-    public void calculate_order_total_for_selected_items() throws itemNotFoundException {
-        List<String> menuList = new ArrayList<String>();
-        menuList.add("Apple Juice");
-        menuList.add("egetable lasagne");
-        assertEquals(379, service.calculateOrderTotal(menuList));
+    public void calculate_order_total_for_selected_items() throws itemNotFoundException, restaurantNotFoundException {
+        List<String> selectedItemList = new ArrayList<String>();
+        selectedItemList.add("Apple Juice");
+        selectedItemList.add("Vegetable lasagne");
+        assertEquals(379, service.calculateOrderTotal("Amelie's cafe", selectedItemList));
     }
 
     @Test
-    public void calculate_order_total_for_no_selected_items() throws itemNotFoundException
+    public void calculate_order_total_for_no_selected_items() throws itemNotFoundException, restaurantNotFoundException
     {
-        List<String> menuList = new ArrayList<String>();
-        assertEquals(0, service.calculateOrderTotal(menuList));
+        List<String> selectedItemList = new ArrayList<String>();
+        assertEquals(0, service.calculateOrderTotal("Amelie's cafe", selectedItemList));
     }
 
     @Test
-    public void calculate_order_total_for_item_does_not_exist_should_throw_exception()throws itemNotFoundException
-    {
-        List<String> menuList = new ArrayList<String>();
-        menuList.add("egetable lasagne");
-        assertThrows(itemNotFoundException.class,()->service.calculateOrderTotal(menuList));
+    public void calculate_order_total_for_item_does_not_exist_should_throw_exception()throws itemNotFoundException, restaurantNotFoundException    {
+        List<String> selectedItemList = new ArrayList<String>();
+        selectedItemList.add("Orange Juice");
+        assertThrows(itemNotFoundException.class,()->service.calculateOrderTotal("Amelie's cafe", selectedItemList));
     }
+    @Test
+    public void calculate_order_total_for_zero_items_exist_in_restaurant_should_throw_exception()throws itemNotFoundException, restaurantNotFoundException
+    {
+        LocalTime openingTime = LocalTime.parse("10:30:00");
+        LocalTime closingTime = LocalTime.parse("22:00:00");
+        restaurant = service.addRestaurant("Veera's cafe","Chennai",openingTime,closingTime);
+        List<String> selectedItemList = new ArrayList<String>();
+        selectedItemList.add("PineApple Juice");
+        assertThrows(itemNotFoundException.class,()->service.calculateOrderTotal("Veera's cafe", selectedItemList));
+    }
+
     //CALCULATE OREER TOTAL
 }
