@@ -35,4 +35,7 @@ public class RestaurantService {
     public List<Restaurant> getRestaurants() {
         return restaurants;
     }
+    public int calculateOrderTotal(List<String> menuList) throws itemNotFoundException {
+        return 0;
+    }
 }
